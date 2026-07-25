@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, List
 
 import torch
-from minisgl.utils import is_sm90_supported, nvtx_annotate
+from minisgl.utils import is_arch_supported, nvtx_annotate
 
 if TYPE_CHECKING:
     from minisgl.core import Batch
@@ -29,7 +29,7 @@ def sample_impl(
 ) -> torch.Tensor:
     import flashinfer.sampling as sampling
 
-    probs = sampling.softmax(logits, temperatures, enable_pdl=is_sm90_supported())
+    probs = sampling.softmax(logits, temperatures, enable_pdl=is_arch_supported(9))
     if top_k is None and top_p is None:
         return sampling.sampling_from_probs(probs)
 

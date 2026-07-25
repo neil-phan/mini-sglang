@@ -21,9 +21,14 @@ def is_arch_supported(major: int, minor: int = 0) -> bool:
     return arch >= (major, minor)
 
 
+def _is_arch_exact(major: int) -> bool:
+    arch = _get_torch_cuda_version()
+    return arch is not None and arch[0] == major
+
+
 def is_sm90_supported() -> bool:
-    return is_arch_supported(9, 0)
+    return _is_arch_exact(9)
 
 
 def is_sm100_supported() -> bool:
-    return is_arch_supported(10, 0)
+    return _is_arch_exact(10)
